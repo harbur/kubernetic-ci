@@ -2,7 +2,7 @@ def call(body) {
   node ("jenkins-jenkins-slave"){
     try{
       stage 'Init'
-      sh "docker build -t demo ."
+      sh "docker ps"
       echo "hello"
       stage 'Build'
       echo "done"
