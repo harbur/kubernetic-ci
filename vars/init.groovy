@@ -3,7 +3,7 @@ def call(body) {
     try{
       stage 'Build'
       checkout scm
-      sh "docker ps"
+      sh "docker build -t demo ."
       echo "hello"
       stage 'Push'
       echo "done"
