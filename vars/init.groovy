@@ -1,10 +1,11 @@
 def call(body) {
   node ("jenkins-jenkins-slave"){
     try{
-      stage 'Init'
+      stage 'Build'
+      checkout scm
       sh "docker ps"
       echo "hello"
-      stage 'Build'
+      stage 'Push'
       echo "done"
     } catch (e){
       throw e
