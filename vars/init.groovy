@@ -1,5 +1,5 @@
 def call(body) {
-  node ("master"){
+  node ("jenkins-jenkins-slave"){
     try{
       stage 'Init'
       echo "hello"
