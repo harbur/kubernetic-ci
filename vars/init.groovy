@@ -9,11 +9,11 @@ def call(body) {
         }
 
         stage ('Build') {
-              sh "ls -alh"
+              sh "kc build"
         }
 
         stage ('Push') {
-              sh "kc build"
+              sh "kc push"
         }
       }
     } catch (e){
