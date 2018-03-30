@@ -9,11 +9,12 @@ def call(body) {
         }
 
         stage ('Build') {
-              sh "kc build"
+          sh "printenv"
+          sh "kc build"
         }
 
         stage ('Push') {
-              sh "kc push"
+          sh "kc push"
         }
       }
     } catch (e){
