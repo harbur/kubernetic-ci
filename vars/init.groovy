@@ -4,7 +4,7 @@ def call(body) {
       stage ('Build') {
         checkout scm
 
-        kc_image = docker.image("docker.k8s.harbur.io/kc")
+        kc_image = docker.image("docker.k8s.harbur.io/kc:1bff56a")
         kc_image.inside ()  {
           sh("echo hello")
           sh("kc build")
