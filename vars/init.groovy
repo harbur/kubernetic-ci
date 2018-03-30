@@ -6,14 +6,14 @@ def call(body) {
 
         kc_image = docker.image("docker.k8s.harbur.io/kc:1bff56a")
         kc_image.inside  {
-            sh "echo hello"
+            sh "kc build"
         }
         
         //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'KUBERNETIC_ACCESS_KEY', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
           //sh "echo $USERNAME - $PASSWORD ::::"
         //}
 
-        sh "docker build -t demo ."
+        // sh "docker build -t demo ."
         echo "hello"
       }
       stage ('Push') {
