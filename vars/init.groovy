@@ -9,7 +9,7 @@ def call(body) {
         }
 
         stage ('Build') {
-              sh "kc build"
+              sh "ls -alh"
         }
 
         stage ('Push') {
