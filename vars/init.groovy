@@ -10,11 +10,11 @@ def call(body) {
 
         stage ('Build') {
           sh "printenv"
-          sh "kc build"
+          sh "kc build -t ${BRANCH_NAME}"
         }
 
         stage ('Push') {
-          sh "kc push"
+          sh "kc push -t ${BRANCH_NAME}"
         }
       }
     } catch (e){
