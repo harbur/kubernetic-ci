@@ -5,9 +5,8 @@ def call(body) {
         checkout scm
 
         kc_image = docker.image("docker.k8s.harbur.io/kc:1bff56a")
-        kc_image.inside ()  {
-          sh("echo hello")
-          sh("kc build")
+        kc_image.inside  {
+            sh "echo hello"
         }
         
         //withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'KUBERNETIC_ACCESS_KEY', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
