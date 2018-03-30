@@ -13,7 +13,7 @@ def call(body) {
         }
 
         stage ('Push') {
-              sh "ls -alh"
+              sh "kc build"
         }
       }
     } catch (e){
