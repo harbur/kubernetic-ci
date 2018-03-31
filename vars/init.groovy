@@ -11,27 +11,28 @@ def call(body) {
           }
   
           stage ('Build') {
-            sh "printenv"
-            sh "pwd"
-            sh "whoami"
-            sh "ls -la /usr/bin/docker"
-            sh "ls -la /var/run/"
-            sh "kc build -t ${BRANCH_NAME}"
-          }
-
-          stage('Input') {
-def userInput = input(
- id: 'userInput', message: 'Let\'s promote?', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
- [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
-])
-echo ("Env: "+userInput['env'])
-echo ("Target: "+userInput['target'])
-
+            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
+            try {
+              sh "kc build -t ${BRANCH_NAME}"
+              bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
+            } catch(Exception e) {
+              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
+                buildDescription: 'Something went wrong with build!'
+              )
+            }
           }
   
           stage ('Push') {
-            sh "kc push -t ${BRANCH_NAME}"
+            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
+            try {
+              sh "kc push -t ${BRANCH_NAME}"
+              bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'push', buildName: 'Push')
+            } catch(Exception e) {
+              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'push', buildName: 'Push',
+                buildDescription: 'Something went wrong while pushing image(s) to the registry!'
+              )
+            }
+
           }
         }
       }
