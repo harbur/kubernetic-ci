@@ -28,7 +28,7 @@ def call(body) {
 
             try {
               sh '''
-                for i in `ls -1 charts` do
+                for i in `ls -1 charts`; do
                   helm package --destination docs "charts/$i"
                 done
               '''
