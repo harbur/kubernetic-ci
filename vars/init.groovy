@@ -15,6 +15,7 @@ def call(body) {
             sh "pwd"
             sh "whoami"
             sh "ls -la /usr/bin/docker"
+            sh "ls -la /var/run/"
             sh "/usr/bin/docker ps"
             sh "kc build -t ${BRANCH_NAME}"
           }
