@@ -15,6 +15,7 @@ def call(body) {
           }
   
           stage ('Push') {
+            sh "docker login docker.k8s.harbur.io -u admin -p admin123"
             sh "kc push -t ${BRANCH_NAME}"
           }
         }
