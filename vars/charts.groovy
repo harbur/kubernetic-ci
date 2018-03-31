@@ -28,6 +28,7 @@ def call(body) {
 
             try {
               sh '''
+                helm init -c
                 for i in `ls -1 charts`; do
                   helm package --destination docs "charts/$i"
                 done
