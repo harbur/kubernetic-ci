@@ -27,11 +27,11 @@ def call(body) {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
 
             try {
-              sh """
+              sh '''
                 for i in `ls -1 charts` do
                   helm package --destination docs "charts/$i"
                 done
-              """
+              '''
 
               bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
             } catch(Exception e) {
