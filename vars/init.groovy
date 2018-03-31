@@ -14,8 +14,8 @@ def call(body) {
             sh "printenv"
             sh "pwd"
             sh "whoami"
-            sh "ls -la /root"
-            sh "docker ps"
+            sh "ls -la /usr/bin/docker"
+            sh "/usr/bin/docker ps"
             sh "kc build -t ${BRANCH_NAME}"
           }
   
