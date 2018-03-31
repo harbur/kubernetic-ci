@@ -1,7 +1,7 @@
 def call(body) {
   node ("jenkins-jenkins-slave"){
     try{
-      docker.withServer('docker.k8s.harbur.io', 'REGISTRY') {
+      docker.withRegistry('docker.k8s.harbur.io', 'REGISTRY') {
         kc_image = docker.image("docker.k8s.harbur.io/kc:04d0fc5")
         kc_image.inside  {
   
