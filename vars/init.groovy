@@ -13,6 +13,8 @@ def call(body) {
           stage ('Build') {
             sh "printenv"
             sh "pwd"
+            sh "whoami"
+            sh "ls -la /root"
             sh "kc build -t ${BRANCH_NAME}"
           }
   
