@@ -20,18 +20,17 @@ def call(body) {
               buildDescription: 'Something went wrong with build!'
             )
           }
-  
-          stage ('Push') {
-            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
-            try {
-              sh "kc push -t ${BRANCH_NAME}"
-              bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'push', buildName: 'Push')
-            } catch(Exception e) {
-              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'push', buildName: 'Push',
-                buildDescription: 'Something went wrong while pushing image(s) to the registry!'
-              )
-            }
 
+          bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
+          try {
+            stage ('Push') {
+              sh "kc push -t ${BRANCH_NAME}"
+            }
+            bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'push', buildName: 'Push')
+          } catch(Exception e) {
+            bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'push', buildName: 'Push',
+              buildDescription: 'Something went wrong while pushing image(s) to the registry!'
+            )
           }
         }
       }
