@@ -10,11 +10,28 @@ def call(body) {
             checkout scm
           }
   
+          stage ('Test') {
+            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'test', buildName: 'Test')
+
+            try {
+              sh "helm lint charts/*"
+              bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'test', buildName: 'Test')
+            } catch(Exception e) {
+              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'test', buildName: 'Test',
+                buildDescription: 'Something went wrong with build!'
+              )
+            }
+          }
+
           stage ('Build') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
 
             try {
-              sh "kc build -t ${BRANCH_NAME}"
+              sh """
+              for i in `ls -1 charts` do
+                helm package --destination docs "charts/$i"
+              done
+              """
               bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
             } catch(Exception e) {
               bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
