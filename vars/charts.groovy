@@ -1,7 +1,7 @@
 def call(body) {
   node ("jenkins-jenkins-slave"){
     try{
-      sh "docker login docker.k8s.harbur.io -u admin -p admin123"
+      sh "docker login docker.k8s.harbur.io -u admin -p sQe3tokiLm"
       docker.withRegistry('https://docker.k8s.harbur.io', 'REGISTRY') {
         kc_image = docker.image("docker.k8s.harbur.io/kc:55688e4")
         kc_image.inside('-v /home/jenkins/.docker/:/root/.docker/ -v /usr/bin/docker:/usr/bin/docker')  {
