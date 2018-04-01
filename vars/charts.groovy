@@ -10,6 +10,26 @@ def call(body) {
             checkout scm
           }
   
+          stage ('Build') {
+            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
+
+            try {
+              sh '''
+                helm init -c
+                for i in `ls -1 charts`; do
+                  helm dep build
+                  helm package --destination docs "charts/$i"
+                done
+              '''
+
+              bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
+            } catch(Exception e) {
+              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
+                buildDescription: 'Something went wrong with build!'
+              )
+            }
+          }
+  
           stage ('Test') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'test', buildName: 'Test')
 
@@ -23,25 +43,6 @@ def call(body) {
             }
           }
 
-          stage ('Build') {
-            bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
-
-            try {
-              sh '''
-                helm init -c
-                for i in `ls -1 charts`; do
-                  helm package --destination docs "charts/$i"
-                done
-              '''
-
-              bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
-            } catch(Exception e) {
-              bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
-                buildDescription: 'Something went wrong with build!'
-              )
-            }
-          }
-  
           stage ('Push') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
             try {
