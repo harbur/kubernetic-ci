@@ -45,15 +45,15 @@ def call(body) {
           stage ('Push') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
             try {
-def userInput = input(
- id: 'userInput', message: 'Let\'s promote?', parameters: [
- [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
-])
-echo ("Env: "+userInput)
+// def userInput = input(
+// id: 'userInput', message: 'Let\'s promote?', parameters: [
+// [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+//])
+//echo ("Env: "+userInput)
 
               sh '''
                 for file in `ls -1 docs/*.tgz`; do
-                  curl  -F "chart=@$file" saucy-uakari-chartmuseum:8080/api/charts
+                  curl  -F "chart=@$file" https://chartmuseum.k8s.harbur.io/api/charts
                 done
               '''
 
