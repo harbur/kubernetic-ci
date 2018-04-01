@@ -17,7 +17,7 @@ def call(body) {
               sh '''
                 helm init -c
                 for i in `ls -1 charts`; do
-                  helm dep build
+                  helm dep build "charts/$i"
                   helm package --destination docs "charts/$i"
                 done
               '''
