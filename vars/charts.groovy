@@ -45,7 +45,12 @@ def call(body) {
           stage ('Push') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
             try {
-              sh "kc push -t ${BRANCH_NAME}"
+def userInput = input(
+ id: 'userInput', message: 'Let\'s promote?', parameters: [
+ [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+])
+echo ("Env: "+userInput)
+
               bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'push', buildName: 'Push')
             } catch(Exception e) {
               bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'push', buildName: 'Push',
