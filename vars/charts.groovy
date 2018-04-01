@@ -45,11 +45,11 @@ def call(body) {
           stage ('Push') {
             bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
             try {
-// def userInput = input(
-//  id: 'userInput', message: 'Let\'s promote?', parameters: [
-//  [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
-// ])
-// echo ("Env: "+userInput)
+def userInput = input(
+ id: 'userInput', message: 'Let\'s promote?', parameters: [
+ [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+])
+echo ("Env: "+userInput)
 
               sh '''
                 for file in `ls -1 docs/*.tgz`; do
