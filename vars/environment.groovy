@@ -11,7 +11,7 @@ def call(body) {
 
         try {
           sh "helm dep build"
-          sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-sandbox"
+          sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
 
           bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'deploy', buildName: 'Deploy')
         } catch(Exception e) {
