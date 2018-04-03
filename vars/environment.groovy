@@ -10,6 +10,7 @@ def call(body) {
           bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'deploy', buildName: 'Deploy')
 
         try {
+          sh "helm init -c"
           sh "helm dep build env/sandbox/"
           sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
 
