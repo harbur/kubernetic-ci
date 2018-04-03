@@ -11,6 +11,7 @@ def call(body) {
 
         try {
           sh "helm init -c"
+          sh "helm repo add chartmuseum https://chartmuseum.k8s.harbur.io"
           sh "helm dep build env/sandbox/"
           sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
 
