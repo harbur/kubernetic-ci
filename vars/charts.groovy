@@ -3,7 +3,7 @@ def call(body) {
     try{
       withCredentials([[
         $class: 'UsernamePasswordMultiBinding',
-        credentialsId: REGISTRY,
+        credentialsId: 'REGISTRY',
         usernameVariable: 'DOCKER_USERNAME',
         passwordVariable: 'DOCKER_PASSWORD'
       ]]) { 
