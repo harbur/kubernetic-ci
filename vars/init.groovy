@@ -1,7 +1,14 @@
 def call(body) {
   node ("jenkins-jenkins-slave"){
     try{
-      sh "docker login docker.k8s.harbur.io -u admin -p sQe3tokiLm"
+      withCredentials([[
+        $class: 'UsernamePasswordMultiBinding',
+        credentialsId: 'REGISTRY',
+        usernameVariable: 'DOCKER_USERNAME',
+        passwordVariable: 'DOCKER_PASSWORD'
+      ]]) { 
+        sh "docker login docker.k8s.harbur.io -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+      }
   
       stage ('Checkout') {
         checkout scm
