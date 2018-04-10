@@ -19,7 +19,6 @@ def call(body) {
             sh "helm repo add ${kv.name} ${kv.url}"
         }
 
-        for ()
         try {
           sh '''
             helm init -c
