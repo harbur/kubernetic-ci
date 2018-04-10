@@ -2,22 +2,16 @@ def call(body) {
 
   def dockerCmd = new io.harbur.DockerCmd()
   def gitCmd = new io.harbur.GitCmd()
+  def helmCmd = new io.harbur.HelmCmd()
 
   node ("jenkins-jenkins-slave"){
     try{
       dockerCmd.login("docker.k8s.harbur.io")
       gitCmd.checkout()
-  
+      helmCmd.init()
+
       stage ('Build') {
         bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
-        def properties = readYaml file: '/pipeline/properties.yaml'
-        echo "${properties.repos}"
-        echo "Initializing Helm"
-        sh "helm init -c"
-        for (kv in properties.repos) {
-            echo "Adding Helm repository ${kv.name}: ${kv.url}"
-            sh "helm repo add ${kv.name} ${kv.url}"
-        }
 
         try {
           sh '''
