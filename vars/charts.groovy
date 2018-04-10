@@ -15,8 +15,6 @@ def call(body) {
 
         try {
           sh '''
-            helm init -c
-            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
             for i in `ls -1 charts`; do
               helm dep build "charts/$i"
               helm package --destination docs "charts/$i"
