@@ -1,17 +1,14 @@
 def call(body) {
+
+  def dockerCmd = new io.harbur.DockerCmd()
+
   node ("jenkins-jenkins-slave"){
     try{
-      withCredentials([[
-        $class: 'UsernamePasswordMultiBinding',
-        credentialsId: 'REGISTRY',
-        usernameVariable: 'DOCKER_USERNAME',
-        passwordVariable: 'DOCKER_PASSWORD'
-      ]]) { 
-        sh "docker login docker.k8s.harbur.io -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+      dockerCmd.login("docker.k8s.harbur.io")
+
+      stage ('Checkout') {
+        checkout scm
       }
-        stage ('Checkout') {
-          checkout scm
-        }
 
         stage ('Deploy') {
           bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'deploy', buildName: 'Deploy')
