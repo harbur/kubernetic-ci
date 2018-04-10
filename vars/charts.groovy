@@ -6,45 +6,26 @@ def call(body) {
 
   node ("jenkins-jenkins-slave"){
     try{
+      bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
       dockerCmd.login("docker.k8s.harbur.io")
       gitCmd.checkout()
 
       stage ('Build') {
-        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
         helmCmd.init()
 
-        try {
           sh '''
             for i in `ls -1 charts`; do
               helm dep build "charts/$i"
               helm package --destination docs "charts/$i"
             done
           '''
-
-          bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
-        } catch(Exception e) {
-          bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
-            buildDescription: 'Something went wrong with build!'
-          )
-        }
       }
   
       stage ('Test') {
-        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'test', buildName: 'Test')
-
-        try {
-          sh "helm lint charts/*"
-          bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'test', buildName: 'Test')
-        } catch(Exception e) {
-          bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'test', buildName: 'Test',
-            buildDescription: 'Something went wrong with build!'
-          )
-        }
+        sh "helm lint charts/*"
       }
 
       stage ('Push') {
-        bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'push', buildName: 'Push')
-        try {
 // def userInput = input(
 //  id: 'userInput', message: 'Let\'s promote?', parameters: [
 //  [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
@@ -57,15 +38,12 @@ def call(body) {
             done
           '''
 
-          bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'push', buildName: 'Push')
-        } catch(Exception e) {
-          bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'push', buildName: 'Push',
-            buildDescription: 'Something went wrong while pushing image(s) to the registry!'
-          )
-        }
+          bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
       }
     } catch (e){
-      throw e
+      bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
+        buildDescription: 'Something went wrong with build!'
+      )
     }
   }
 }
