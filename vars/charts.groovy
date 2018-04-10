@@ -10,7 +10,7 @@ def call(body) {
   
       stage ('Build') {
         bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
-        def properties = readYaml file: '/pipeline/properties'
+        def properties = readYaml file: '/pipeline/properties.yaml'
         echo "${properties.repos}"
 
         try {
