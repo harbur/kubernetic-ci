@@ -9,7 +9,7 @@ def init() {
   }
 }
 
-def package() {
+def pack() {
   def project_properties = readYaml file: 'kubernetic.yaml'
   for (chart in project_properties.charts) {
     sh """
