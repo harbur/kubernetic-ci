@@ -8,10 +8,10 @@ def call(body) {
     try{
       dockerCmd.login("docker.k8s.harbur.io")
       gitCmd.checkout()
-      helmCmd.init()
 
       stage ('Build') {
         bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
+        helmCmd.init()
 
         try {
           sh '''
