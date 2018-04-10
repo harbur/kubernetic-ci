@@ -17,7 +17,7 @@ def call(body) {
       }
 
       stage ('Test') {
-        sh "helm lint charts/*"
+        helmCmd.test()
       }
 
       stage ('Push') {
