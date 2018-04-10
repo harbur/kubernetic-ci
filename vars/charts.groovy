@@ -13,12 +13,12 @@ def call(body) {
       stage ('Build') {
         helmCmd.init()
 
-          sh '''
-            for i in `ls -1 charts`; do
-              helm dep build "charts/$i"
-              helm package --destination docs "charts/$i"
-            done
-          '''
+        sh '''
+          for i in `ls -1 charts`; do
+            helm dep build "charts/$i"
+            helm package --destination docs "charts/$i"
+          done
+        '''
       }
   
       stage ('Test') {
@@ -32,14 +32,13 @@ def call(body) {
 // ])
 // echo ("Env: "+userInput)
 
-          sh '''
-            for file in `ls -1 docs/*.tgz`; do
-              curl  -F "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
-            done
-          '''
-
-          bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
+        sh '''
+          for file in `ls -1 docs/*.tgz`; do
+            curl  -F "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
+          done
+        '''
       }
+      bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
     } catch (e){
       bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
         buildDescription: 'Something went wrong with build!'
