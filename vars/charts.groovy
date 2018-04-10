@@ -12,7 +12,14 @@ def call(body) {
         bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
         def properties = readYaml file: '/pipeline/properties.yaml'
         echo "${properties.repos}"
+        echo "Initializing Helm"
+        sh "helm init -c"
+        for (kv in properties.repos) {
+            echo "Adding Helm repository ${kv.name}: ${kv.url}"
+            sh "helm repo add ${kv.name} ${kv.url}"
+        }
 
+        for ()
         try {
           sh '''
             helm init -c
