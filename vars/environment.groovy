@@ -1,14 +1,12 @@
 def call(body) {
 
   def dockerCmd = new io.harbur.DockerCmd()
+  def gitCmd = new io.harbur.GitCmd()
 
   node ("jenkins-jenkins-slave"){
     try{
       dockerCmd.login("docker.k8s.harbur.io")
-
-      stage ('Checkout') {
-        checkout scm
-      }
+      gitCmd.checkout()
 
         stage ('Deploy') {
           bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'deploy', buildName: 'Deploy')
