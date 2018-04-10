@@ -13,16 +13,9 @@ def call(body) {
 
       stage ('Build') {
         helmCmd.init()
-
         helmCmd.pack()
-        sh '''
-          for i in `ls -1 charts`; do
-            helm dep build "charts/$i"
-            helm package --destination docs "charts/$i"
-          done
-        '''
       }
-  
+
       stage ('Test') {
         sh "helm lint charts/*"
       }

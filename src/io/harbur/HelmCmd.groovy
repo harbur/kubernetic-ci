@@ -18,3 +18,12 @@ def pack() {
     """
   }
 }
+
+def test() {
+  def project_properties = readYaml file: 'kubernetic.yaml'
+  for (chart in project_properties.charts) {
+    sh """
+      helm lint "${chart}"
+    """
+  }
+}
