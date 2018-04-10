@@ -3,10 +3,11 @@ def call(body) {
   def dockerCmd = new io.harbur.DockerCmd()
   def gitCmd = new io.harbur.GitCmd()
   def helmCmd = new io.harbur.HelmCmd()
+  def bitBucketCmd = new io.harbur.BitBucketCmd()
 
   node ("jenkins-jenkins-slave"){
     try{
-      bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')
+      bitBucketCmd.inProgress()
       dockerCmd.login("docker.k8s.harbur.io")
       gitCmd.checkout()
 
@@ -38,11 +39,9 @@ def call(body) {
           done
         '''
       }
-      bitbucketStatusNotify( buildState: 'SUCCESSFUL', buildKey: 'build', buildName: 'Build')
+      bitBucketCmd.successful()
     } catch (e){
-      bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'build', buildName: 'Build',
-        buildDescription: 'Something went wrong with build!'
-      )
+      bitBucketCmd.failed()
     }
   }
 }
