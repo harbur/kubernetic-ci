@@ -12,9 +12,9 @@ def init() {
 def package() {
   def project_properties = readYaml file: 'kubernetic.yaml'
   for (chart in project_properties.charts) {
-    sh '''
-      helm dep build "charts/$i"'
-      helm package --destination docs "charts/$i"
-    '''
+    sh """
+      helm dep build "charts/${chart}"
+      helm package --destination docs "charts/${chart}"
+    """
   }
 }
