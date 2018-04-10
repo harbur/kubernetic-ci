@@ -13,8 +13,8 @@ def pack() {
   def project_properties = readYaml file: 'kubernetic.yaml'
   for (chart in project_properties.charts) {
     sh """
-      helm dep build "charts/${chart}"
-      helm package --destination docs "charts/${chart}"
+      helm dep build "${chart}"
+      helm package --destination docs "${chart}"
     """
   }
 }
