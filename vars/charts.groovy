@@ -14,6 +14,7 @@ def call(body) {
       stage ('Build') {
         helmCmd.init()
 
+        helmCmd.package()
         sh '''
           for i in `ls -1 charts`; do
             helm dep build "charts/$i"
