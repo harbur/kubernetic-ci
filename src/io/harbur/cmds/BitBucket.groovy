@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-package io.harbur
+package io.harbur.cmds
 
 def inProgress() {
   bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'build', buildName: 'Build')

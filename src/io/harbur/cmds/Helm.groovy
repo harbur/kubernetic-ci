@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-package io.harbur
+package io.harbur.cmds
 
 def init() {
   sh "helm init -c"

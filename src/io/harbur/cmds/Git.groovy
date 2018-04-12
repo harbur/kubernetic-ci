@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-package io.harbur
+package io.harbur.cmds
 
 def checkout() {
   stage ('Checkout') {
