@@ -13,14 +13,8 @@ def call(body) {
 
       stages.checkout()
       stages.build()
-
-      stage ('Test') {
-        helm.test()
-      }
-
-      stage ('Push') {
-        helm.push()
-      }
+      stages.test()
+      stages.push()
 
       bitBucket.successful()
     } catch (e){

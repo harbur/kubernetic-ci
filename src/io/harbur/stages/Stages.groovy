@@ -20,9 +20,19 @@ def build() {
 }
 
 def test() {
+  def helm = new io.harbur.cmds.Helm()
+
+  stage ('Test') {
+    helm.test()
+  }
 }
 
 def push() {
+  def helm = new io.harbur.cmds.Helm()
+
+  stage ('Push') {
+    helm.push()
+  }
 }
 
 def deploy() {
