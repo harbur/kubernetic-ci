@@ -10,6 +10,13 @@ def checkout() {
 }
 
 def build() {
+  def helm = new io.harbur.cmds.Helm()
+
+  stage ('Build') {
+    helm.init()
+    helm.addRepos()
+    helm.pack()
+  }
 }
 
 def test() {

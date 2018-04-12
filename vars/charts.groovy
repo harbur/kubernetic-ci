@@ -12,12 +12,7 @@ def call(body) {
       docker.login("docker.k8s.harbur.io")
 
       stages.checkout()
-
-      stage ('Build') {
-        helm.init()
-        helm.addRepos()
-        helm.pack()
-      }
+      stages.build()
 
       stage ('Test') {
         helm.test()
