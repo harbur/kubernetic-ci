@@ -6,15 +6,17 @@ def init() {
 }
 
 def addRepos() {
-  def global_properties = readYaml file: '/pipeline/properties.yaml'
-  for (repo in global_properties.repos) {
+  def properties = new io.harbur.utils.Properties()
+
+  for (repo in properties.global().repos) {
     sh "helm repo add ${repo.name} ${repo.url}"
   }
 }
 
 def pack() {
-  def project_properties = readYaml file: 'kubernetic.yaml'
-  for (chart in project_properties.charts) {
+  def properties = new io.harbur.utils.Properties()
+
+  for (chart in properties.project().charts) {
     sh """
       helm dep build "${chart}"
       helm package --destination docs "${chart}"
@@ -28,8 +30,9 @@ def upgrade() {
 }
 
 def test() {
-  def project_properties = readYaml file: 'kubernetic.yaml'
-  for (chart in project_properties.charts) {
+  def properties = new io.harbur.utils.Properties()
+
+  for (chart in properties.project().charts) {
     sh """
       helm lint "${chart}"
     """
