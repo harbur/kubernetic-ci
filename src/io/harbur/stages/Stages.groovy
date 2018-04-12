@@ -1,9 +1,9 @@
 #!/usr/bin/groovy
 package io.harbur.stages
 
-def git = new io.harbur.cmds.Git()
-
 def checkout() {
+  def git = new io.harbur.cmds.Git()
+
   stage ('Checkout') {
     git.checkout()
   }
