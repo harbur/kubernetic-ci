@@ -2,9 +2,11 @@
 package io.harbur.utils
 
 def global() {
-  return readYaml file: '/pipeline/properties.yaml'
+  def global_properties = readYaml file: '/pipeline/properties.yaml'
+  return global_properties
 }
 
 def project() {
-  return readYaml file: 'kubernetic.yaml'
+  def project_properties = readYaml file: 'kubernetic.yaml'
+  return project_properties
 }
