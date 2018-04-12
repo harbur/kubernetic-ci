@@ -4,12 +4,14 @@ def call(body) {
   def git = new io.harbur.cmds.Git()
   def helm = new io.harbur.cmds.Helm()
   def bitBucket = new io.harbur.cmds.BitBucket()
+  def stages = new io.harbur.stages.Stages()
 
   node ("jenkins-jenkins-slave"){
     try{
       bitBucket.inProgress()
       docker.login("docker.k8s.harbur.io")
-      git.checkout()
+
+      stages.checkout()
 
       stage ('Build') {
         helm.init()
