@@ -20,6 +20,7 @@ def call(body) {
       bitBucketCmd.successful()
     } catch (e){
       bitBucketCmd.failed()
+      throw e
     }
   }
 }
