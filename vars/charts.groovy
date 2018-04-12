@@ -23,6 +23,7 @@ def call(body) {
       stage ('Push') {
         helmCmd.push()
       }
+
       bitBucketCmd.successful()
     } catch (e){
       bitBucketCmd.failed()
