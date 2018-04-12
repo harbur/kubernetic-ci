@@ -2,30 +2,24 @@ def call(body) {
 
   def dockerCmd = new io.harbur.DockerCmd()
   def gitCmd = new io.harbur.GitCmd()
+  def helmCmd = new io.harbur.HelmCmd()
+  def bitBucketCmd = new io.harbur.BitBucketCmd()
 
   node ("jenkins-jenkins-slave"){
     try{
+      bitBucketCmd.inProgress()
       dockerCmd.login("docker.k8s.harbur.io")
       gitCmd.checkout()
 
-        stage ('Deploy') {
-          bitbucketStatusNotify(buildState: 'INPROGRESS', buildKey: 'deploy', buildName: 'Deploy')
-
-        try {
-          sh "helm init -c"
-          sh "helm repo add chartmuseum http://chartmuseum-chartmuseum:8080"
-          sh "helm dep build env/sandbox/"
-          sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
-
-          bitbucketStatusNotify(buildState: 'SUCCESSFUL', buildKey: 'deploy', buildName: 'Deploy')
-        } catch(Exception e) {
-          bitbucketStatusNotify(buildState: 'FAILED', buildKey: 'deploy', buildName: 'Deploy',
-            buildDescription: 'Something went wrong with deploy!'
-          )
-        }
+      stage ('Deploy') {
+        helmCmd.init()
+        sh "helm dep build env/sandbox/"
+        sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
       }
+
+      bitBucketCmd.successful()
     } catch (e){
-      throw e
+      bitBucketCmd.failed()
     }
   }
 }
