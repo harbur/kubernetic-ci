@@ -13,6 +13,7 @@ def call(body) {
 
       stage ('Build') {
         helm.init()
+        helm.addRepos()
         helm.pack()
       }
 

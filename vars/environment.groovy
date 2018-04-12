@@ -13,8 +13,8 @@ def call(body) {
 
       stage ('Deploy') {
         helm.init()
-        sh "helm dep build env/sandbox/"
-        sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
+        helm.addRepos()
+        helm.upgrade()
       }
 
       bitBucket.successful()

@@ -3,6 +3,9 @@ package io.harbur.cmds
 
 def init() {
   sh "helm init -c"
+}
+
+def addRepos() {
   def global_properties = readYaml file: '/pipeline/properties.yaml'
   for (repo in global_properties.repos) {
     sh "helm repo add ${repo.name} ${repo.url}"
@@ -17,6 +20,11 @@ def pack() {
       helm package --destination docs "${chart}"
     """
   }
+}
+
+def upgrade() {
+  sh "helm dep build env/sandbox/"
+  sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
 }
 
 def test() {

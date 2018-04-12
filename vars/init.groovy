@@ -4,6 +4,7 @@ def call(body) {
   def git = new io.harbur.cmds.Git()
   def helm = new io.harbur.cmds.Helm()
   def bitBucket = new io.harbur.cmds.BitBucket()
+  def kc = new io.harbur.cmds.KuberneticCLI()
 
   node ("jenkins-jenkins-slave"){
     try{
@@ -12,11 +13,11 @@ def call(body) {
       git.checkout()
 
       stage ('Build') {
-        sh "kc build -t ${BRANCH_NAME}"
+        kc.build()
       }
 
       stage ('Push') {
-        sh "kc push -t ${BRANCH_NAME}"
+        kc.push()
       }
 
       bitBucket.successful()
