@@ -27,3 +27,11 @@ def test() {
     """
   }
 }
+
+def push() {
+  sh '''
+    for file in `ls -1 docs/*.tgz`; do
+      curl  -F "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
+    done
+  '''
+}

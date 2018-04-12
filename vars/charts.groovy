@@ -21,17 +21,7 @@ def call(body) {
       }
 
       stage ('Push') {
-// def userInput = input(
-//  id: 'userInput', message: 'Let\'s promote?', parameters: [
-//  [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
-// ])
-// echo ("Env: "+userInput)
-
-        sh '''
-          for file in `ls -1 docs/*.tgz`; do
-            curl  -F "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
-          done
-        '''
+        helmCmd.push()
       }
       bitBucketCmd.successful()
     } catch (e){
