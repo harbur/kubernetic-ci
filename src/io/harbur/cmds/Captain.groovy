@@ -6,7 +6,7 @@ def build() {
 }
 
 def test() {
-  sh "captain test -t ${BRANCH_NAME}"
+  sh "captain test"
 }
 
 def push() {
