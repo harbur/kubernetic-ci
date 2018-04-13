@@ -5,6 +5,7 @@ def call(body) {
   def helm = new io.harbur.cmds.Helm()
   def bitBucket = new io.harbur.cmds.BitBucket()
   def stages = new io.harbur.stages.Stages()
+  def charts = new io.harbur.stages.Charts()
 
   node ("jenkins-jenkins-slave"){
     try{
@@ -12,9 +13,7 @@ def call(body) {
       docker.login("docker.k8s.harbur.io")
 
       stages.checkout()
-      stages.build()
-      stages.test()
-      stages.push()
+      charts.job()
 
       bitBucket.successful()
     } catch (e){

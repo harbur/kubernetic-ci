@@ -1,24 +1,26 @@
 #!/usr/bin/groovy
 package io.harbur.stages
 
-def checkout() {
-  def git = new io.harbur.cmds.Git()
-
-  stage ('Checkout') {
-    git.checkout()
-  }
+def job() {
+  build()
+  test()
+  push()
 }
 
 def build() {
-  def charts = new io.harbur.stages.Charts()
+  def helm = new io.harbur.cmds.Helm()
 
-  charts.job()
+  stage ('Charts Build') {
+    helm.init()
+    helm.addRepos()
+    helm.pack()
+  }
 }
 
 def test() {
   def helm = new io.harbur.cmds.Helm()
 
-  stage ('Test') {
+  stage ('Charts Test') {
     helm.test()
   }
 }
@@ -26,7 +28,7 @@ def test() {
 def push() {
   def helm = new io.harbur.cmds.Helm()
 
-  stage ('Push') {
+  stage ('Charts Push') {
     helm.push()
   }
 }
