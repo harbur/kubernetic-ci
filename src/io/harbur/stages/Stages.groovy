@@ -5,7 +5,7 @@ def checkout() {
   def git = new io.harbur.cmds.Git()
 
   stage ('Checkout') {
-    git.checkout()
+    git.checkout(clearWorkspace: true)
   }
 }
 
