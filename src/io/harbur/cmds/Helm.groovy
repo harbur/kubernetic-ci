@@ -18,8 +18,9 @@ def pack() {
 
   for (chart in properties.project().charts) {
     sh """
+      mkdir -p build/packages
       helm dep build "${chart}"
-      helm package --destination docs "${chart}"
+      helm package --destination build/packages/ "${chart}"
     """
   }
 }
@@ -41,7 +42,7 @@ def test() {
 
 def push() {
   sh '''
-    for file in `ls -1 docs/*.tgz`; do
+    for file in `ls -1 build/packages/*.tgz`; do
       curl  -sF "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
     done
   '''
