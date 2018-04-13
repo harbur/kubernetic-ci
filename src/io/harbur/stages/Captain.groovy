@@ -3,7 +3,7 @@ package io.harbur.stages
 
 def job() {
   def properties = new io.harbur.utils.Properties()
-  if (properties.project().hasProperty("captain") {
+  if (properties.project().hasProperty("captain")) {
     build()
     test()
     push()
