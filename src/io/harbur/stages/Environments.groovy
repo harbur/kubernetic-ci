@@ -12,6 +12,8 @@ def upgrade() {
   def helm = new io.harbur.cmds.Helm()
 
   stage ('Environments Upgrade') {
+    helm.init()
+    helm.addRepos()
     helm.upgrade()
   }
 }
