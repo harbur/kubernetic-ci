@@ -2,7 +2,7 @@
 package io.harbur.cmds
 
 def build() {
-  sh "captain build -t ${BRANCH_NAME}"
+  sh "captain build"
 }
 
 def test() {
@@ -10,5 +10,5 @@ def test() {
 }
 
 def push() {
-  sh "captain push -t ${BRANCH_NAME}"
+  sh "captain push"
 }
