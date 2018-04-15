@@ -13,8 +13,10 @@ def call(body) {
       docker.login("docker.k8s.harbur.io")
 
       stages.checkout()
+
       captain.job()
       charts.job()
+      environment.job()
 
       bitBucket.successful()
     } catch (e){
