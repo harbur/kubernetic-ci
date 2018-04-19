@@ -33,6 +33,7 @@ def upgrade() {
     helm dep build ${environment.path}
     helm upgrade -i ${environment.name} ${environment.path} --namespace ${environment.namespace}
     """
+  }
 }
 
 def test() {
