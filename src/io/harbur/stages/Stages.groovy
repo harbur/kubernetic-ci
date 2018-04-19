@@ -9,27 +9,12 @@ def checkout() {
   }
 }
 
-def build() {
+def jobs() {
   def charts = new io.harbur.stages.Charts()
+  def captain = new io.harbur.stages.Captain()
+  def environments = new io.harbur.stages.Environments()
 
+  captain.job()
   charts.job()
-}
-
-def test() {
-  def helm = new io.harbur.cmds.Helm()
-
-  stage ('Test') {
-    helm.test()
-  }
-}
-
-def push() {
-  def helm = new io.harbur.cmds.Helm()
-
-  stage ('Push') {
-    helm.push()
-  }
-}
-
-def deploy() {
+  environments.job()
 }
