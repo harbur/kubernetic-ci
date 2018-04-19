@@ -26,8 +26,13 @@ def pack() {
 }
 
 def upgrade() {
-  sh "helm dep build env/sandbox/"
-  sh "helm upgrade -i sandbox env/sandbox/ --namespace kc-staging"
+  def properties = new io.harbur.utils.Properties()
+
+  for (environment in properties.project().environments) {
+    sh """
+    helm dep build ${environment.path}
+    helm upgrade -i ${environment.name} ${environment.path} --namespace ${environment.namespace}
+    """
 }
 
 def test() {
