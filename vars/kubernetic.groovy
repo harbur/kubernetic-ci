@@ -8,7 +8,7 @@ def call(body) {
   node ("slave"){
     try{
       bitBucket.inProgress()
-      docker.login("docker.k8s.harbur.io")
+      docker.login()
 
       stages.checkout()
       stages.jobs()

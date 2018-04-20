@@ -1,7 +1,10 @@
 #!/usr/bin/groovy
 package io.harbur.cmds
 
-def login(String registry) {
+def login() {
+    def properties = new io.harbur.utils.Properties()
+    def registry = properties.global().registry
+
     echo "Authenticating to Registry ${registry}"
 
     withCredentials([[
