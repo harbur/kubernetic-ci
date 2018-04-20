@@ -5,7 +5,7 @@ def call(body) {
 
   def stages = new io.harbur.stages.Stages()
 
-  node ("jenkins-jenkins-slave"){
+  node ("slave"){
     try{
       bitBucket.inProgress()
       docker.login("docker.k8s.harbur.io")
