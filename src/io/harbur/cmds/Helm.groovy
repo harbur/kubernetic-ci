@@ -47,9 +47,12 @@ def test() {
 }
 
 def push() {
-  sh '''
+  def properties = new io.harbur.utils.Properties()
+  def chartRepo = properties.global().chartRepo
+
+  sh """
     for file in `ls -1 build/packages/*.tgz`; do
-      curl  -sF "chart=@$file" http://chartmuseum-chartmuseum:8080/api/charts
+      curl  -sF "chart=@$file" http://${chartRepo}:8080/api/charts
     done
-  '''
+  """
 }
