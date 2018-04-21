@@ -52,7 +52,7 @@ def push() {
 
   sh """
     for file in `ls -1 build/packages/*.tgz`; do
-      curl  -sF "chart=@$file" http://${chartRepo}:8080/api/charts
+      curl  -sF "chart=@\$file" http://${chartRepo}:8080/api/charts
     done
   """
 }
