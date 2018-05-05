@@ -26,7 +26,6 @@ def build() {
   """
 
   for (docker in properties.project().docker) {
-    FOO = sh (script: "echo docker build", returnStdout: true)
   }
 }
 
