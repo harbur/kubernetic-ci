@@ -21,6 +21,9 @@ def build() {
   def properties = new io.harbur.utils.Properties()
 
   print "ENV: ${env}"
+  sh """
+  env
+  """
 
   for (docker in properties.project().docker) {
     sh """
