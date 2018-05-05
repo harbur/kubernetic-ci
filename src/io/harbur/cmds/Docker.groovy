@@ -26,9 +26,8 @@ def build() {
   """
 
   for (docker in properties.project().docker) {
-    sh """
-      docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}
-    """
+    command = evaluate "docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}"
+    sh "${command}"
   }
 }
 
