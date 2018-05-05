@@ -7,5 +7,6 @@ def checkout() {
     def commitHash = scmVars.GIT_COMMIT
     env.GIT_COMMIT=commitHash
     println (scmVars)
+    sh """env"""
   }
 }
