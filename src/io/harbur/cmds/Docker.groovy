@@ -39,8 +39,10 @@ def push() {
   def properties = new io.harbur.utils.Properties()
 
   for (docker in properties.project().docker) {
-    sh """
-      docker push ${docker.image}:${docker.version}
-    """
+    for (tag in docker.tags) {
+      sh """
+        docker push ${docker.image}:${tag}
+      """
+    }
   }
 }
