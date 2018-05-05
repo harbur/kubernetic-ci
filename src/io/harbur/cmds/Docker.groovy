@@ -26,7 +26,10 @@ def build() {
   """
 
   for (docker in properties.project().docker) {
-    FOO = sh (script: "echo docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}", returnStdout: true)
+    sh """
+    echo docker build -t ${docker.image}
+    """
+    FOO = sh (script: "echo docker build -t ${docker.image}", returnStdout: true)
   }
 }
 
