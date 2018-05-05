@@ -27,7 +27,7 @@ def build() {
 
   for (docker in properties.project().docker) {
     sh """
-    echo docker build -t ${docker.image}
+    echo docker build -t ${docker.image}:${docker.version}
     """
     FOO = sh (script: "echo docker build -t ${docker.image}", returnStdout: true)
   }
