@@ -23,11 +23,15 @@ def build() {
   for (docker in properties.project().docker) {
 
     tags = ""
-    if (docker.tags && docker.tags.size() > 0) {
+    if (docker.tags) {
       echo "tags found"
+
+      for (tag in docker.tags) {
+        tags+= "-t ${docker.image}:${tag}"
+      }
+      echo "tags: ${tags}"
     } else {
       echo "tags not found"
-
     }
 
     sh """
