@@ -22,10 +22,14 @@ def build() {
 
   for (docker in properties.project().docker) {
 
-    if (docker.tags) {
+    tags = ""
+    if (docker.tags && docker.tags.size() > 0) {
       echo "tags found"
+    } else {
+      echo "tags not found"
+
     }
-    
+
     sh """
       docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}
     """
