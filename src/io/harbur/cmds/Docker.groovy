@@ -27,9 +27,9 @@ def build() {
       echo "tags found"
 
       for (tag in docker.tags) {
-        tags+= "-t ${docker.image}:${tag}"
+        tags+= " -t ${docker.image}:${tag}"
       }
-      echo "tags: ${tags}"
+      sh "echo ${tags}"
     } else {
       echo "tags not found"
     }
