@@ -22,20 +22,15 @@ def build() {
 
   for (docker in properties.project().docker) {
 
-    tags = ""
+    tag_params = ""
     if (docker.tags) {
-      echo "tags found"
-
       for (tag in docker.tags) {
-        tags+= " -t ${docker.image}:${tag}"
+        tag_params+= " -t ${docker.image}:${tag}"
       }
-      sh "echo ${tags}"
-    } else {
-      echo "tags not found"
     }
 
     sh """
-      docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}
+      docker build ${tag_params} -f ${docker.path} ${docker.context}
     """
   }
 }
