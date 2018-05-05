@@ -20,16 +20,10 @@ def login() {
 def build() {
   def properties = new io.harbur.utils.Properties()
 
-  print "ENV: ${env}"
-  sh """
-  env
-  """
-
   for (docker in properties.project().docker) {
     sh """
-    echo docker build -t ${docker.image}:${docker.version}
+      docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}
     """
-    FOO = sh (script: "echo docker build -t ${docker.image}", returnStdout: true)
   }
 }
 
