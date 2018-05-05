@@ -16,3 +16,23 @@ def login() {
       sh "docker login ${registry} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
     }
 }
+
+def build() {
+  def properties = new io.harbur.utils.Properties()
+
+  for (docker in properties.project().docker) {
+    sh """
+      docker build -t ${docker.image}:${docker.version} -f ${docker.path} -f ${docker.context}
+    """
+  }
+}
+
+def push() {
+  def properties = new io.harbur.utils.Properties()
+
+  for (docker in properties.project().docker) {
+    sh """
+      docker push ${docker.image}:${docker.version}
+    """
+  }
+}
