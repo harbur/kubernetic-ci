@@ -21,6 +21,11 @@ def build() {
   def properties = new io.harbur.utils.Properties()
 
   for (docker in properties.project().docker) {
+
+    if (docker.tags) {
+      echo "tags found"
+    }
+    
     sh """
       docker build -t ${docker.image}:${docker.version} -f ${docker.path} ${docker.context}
     """
