@@ -9,7 +9,11 @@ def addRepos() {
   def properties = new io.harbur.utils.Properties()
 
   for (repo in properties.global().repos) {
-    sh "helm repo add ${repo.name} --username ${repo.username} --password ${repo.password} ${repo.url}"
+    if (repo.username && repo.password) {
+      sh "helm repo add ${repo.name} --username ${repo.username} --password ${repo.password} ${repo.url}"
+    } else {
+      sh "helm repo add ${repo.name} ${repo.url}"
+    }
   }
 }
 
