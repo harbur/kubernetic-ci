@@ -26,6 +26,8 @@ def build() {
     if (docker.tags) {
       for (tag in docker.tags) {
         echo "Tag is ${tag}"
+        tag = sh(script: "echo ${tag}", returnStdout: true)
+        echo "Evaluated Tag is ${tag}"
         tag = tag.replaceAll('-','_').replaceAll('/','.')
         echo "Updated Tag is ${tag}"
         tag_params+= " -t ${docker.image}:${tag}"
