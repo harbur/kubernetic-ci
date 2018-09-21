@@ -25,11 +25,7 @@ def build() {
     tag_params = ""
     if (docker.tags) {
       for (tag in docker.tags) {
-        echo "Tag is ${tag}"
-        tag = sh(script: "echo -n ${tag}", returnStdout: true)
-        echo "Evaluated Tag is ${tag}"
-        tag = tag.replaceAll('-','_').replaceAll('/','.')
-        echo "Updated Tag is ${tag}"
+        tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
         tag_params+= " -t ${docker.image}:${tag}"
       }
     }
@@ -45,6 +41,7 @@ def push() {
 
   for (docker in properties.project().docker) {
     for (tag in docker.tags) {
+      tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
       sh """
         docker push ${docker.image}:${tag}
       """
