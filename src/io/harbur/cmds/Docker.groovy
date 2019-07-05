@@ -30,7 +30,7 @@ def build() {
   def properties = new io.harbur.utils.Properties()
   def registry = properties.global().registry
 
-  for (docker in properties.project().docker) {
+  for (config in properties.project().docker) {
 
     // tag_params = ""
     // if (docker.tags) {
@@ -41,7 +41,7 @@ def build() {
     // }
     echo "Authenticating to Registry ${registry}"
     docker.withRegistry(registry, 'REGISTRY') {
-      def customImage = docker.build("${docker.image}:${env.BUILD_ID}", docker.path)
+      def customImage = docker.build("${config.image}:${env.BUILD_ID}", config.path)
       customImage.push()
     }
   }
