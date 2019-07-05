@@ -43,8 +43,8 @@ def build() {
     docker.withRegistry("https://" + registry, 'REGISTRY') {
       def customImage = docker.build("${config.image}", "-f ${config.path} ${config.context}")
       
-      if (docker.tags) {
-        for (tag in docker.tags) {
+      if (config.tags) {
+        for (tag in config.tags) {
           tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
           customImage.push(tag)
         }
