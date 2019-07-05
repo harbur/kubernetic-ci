@@ -41,8 +41,14 @@ def build() {
     // }
     echo "Authenticating to Registry ${registry}"
     docker.withRegistry("https://" + registry, 'REGISTRY') {
-      def customImage = docker.build("${config.image}:${env.BUILD_ID}", "-f ${config.path} ${config.context}")
-      customImage.push()
+      def customImage = docker.build("${config.image}", "-f ${config.path} ${config.context}")
+      
+      if (docker.tags) {
+        for (tag in docker.tags) {
+          tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
+          customImage.push(tag)
+        }
+      }
     }
   }
 }
