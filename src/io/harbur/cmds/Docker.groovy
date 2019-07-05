@@ -41,7 +41,7 @@ def build() {
     // }
     echo "Authenticating to Registry ${registry}"
     docker.withRegistry("https://" + registry, 'REGISTRY') {
-      def customImage = docker.build("${config.image}:${env.BUILD_ID}", config.path)
+      def customImage = docker.build("${config.image}:${env.BUILD_ID}", "-f ${config.path} ${config.context}")
       customImage.push()
     }
   }
