@@ -8,7 +8,7 @@ def build() {
   for (config in properties.project().docker) {
 
     echo "Authenticating to Registry ${registry}"
-    docker.withRegistry("eu.gcr.io", 'gcr:woven-computing-234012') {
+    docker.withRegistry("https://eu.gcr.io", 'gcr:woven-computing-234012') {
       def customImage = docker.build("${config.image}", "-f ${config.path} ${config.context}")
       
       if (config.tags) {
