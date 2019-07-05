@@ -8,7 +8,6 @@ def call(body) {
   node ("slave"){
     try{
       bitBucket.inProgress()
-      docker.login()
 
       stages.checkout()
       stages.jobs()

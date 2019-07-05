@@ -15,11 +15,3 @@ def build() {
     docker.build()
   }
 }
-
-def push() {
-  def docker = new io.harbur.cmds.Docker()
-
-  stage ('Docker Push') {
-    docker.push()
-  }
-}
