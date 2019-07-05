@@ -5,7 +5,6 @@ def job() {
   def properties = new io.harbur.utils.Properties()
   if (properties.project().docker) {
     build()
-    push()
   }
 }
 

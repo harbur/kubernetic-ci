@@ -15,24 +15,35 @@ def login() {
     ]]) {
       sh "docker login ${registry} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
     }
+
+    withCredentials([[
+      $class: 'UsernamePasswordMultiBinding',
+      credentialsId: 'REGISTRY',
+      usernameVariable: 'DOCKER_USERNAME',
+      passwordVariable: 'DOCKER_PASSWORD'
+    ]]) {
+      sh "docker login ${registry} -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+    }
 }
 
 def build() {
   def properties = new io.harbur.utils.Properties()
+  def registry = properties.global().registry
 
   for (docker in properties.project().docker) {
 
-    tag_params = ""
-    if (docker.tags) {
-      for (tag in docker.tags) {
-        tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
-        tag_params+= " -t ${docker.image}:${tag}"
-      }
+    // tag_params = ""
+    // if (docker.tags) {
+    //   for (tag in docker.tags) {
+    //     tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
+    //     tag_params+= " -t ${docker.image}:${tag}"
+    //   }
+    // }
+    echo "Authenticating to Registry ${registry}"
+    docker.withRegistry(registry, 'REGISTRY') {
+      def customImage = docker.build("${docker.image}:${env.BUILD_ID}", docker.path)
+      customImage.push()
     }
-
-    sh """
-      docker build ${tag_params} -f ${docker.path} ${docker.context}
-    """
   }
 }
 
