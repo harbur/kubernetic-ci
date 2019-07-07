@@ -15,7 +15,9 @@ class Helm {
    * @param script Reference to script scope to access `sh()`
    */
   static def init(def script) {
-    script.sh("helm init -c")
+    script.sh(
+      script: "helm init -c",
+      label: "Initializing helm")
   }
 
   /**
@@ -29,11 +31,15 @@ class Helm {
       if (repo.username && repo.password) {
         script.wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: repo.password, var: 'REPO_PASSWORD']]]) {
           script.withEnv(["REPO_PASSWORD=${repo.password}"]) {
-            script.sh("helm repo add ${repo.name} --username ${repo.username} --password ${repo.password} ${repo.url}")
+            script.sh(
+              script: "helm repo add ${repo.name} --username ${repo.username} --password ${repo.password} ${repo.url}",
+              label: "Adding helm repo: ${repo.name}")
           }
         }
       } else {
-        script.sh("helm repo add ${repo.name} ${repo.url}")
+        script.sh(
+          script: "helm repo add ${repo.name} ${repo.url}",
+          label: "Adding helm repo: ${repo.name}")
       }
     }
   }
@@ -46,11 +52,13 @@ class Helm {
    */
   static def pack(def script, List<Chart> charts) {
     for (chart in charts) {
-      script.sh """
-        mkdir -p build/packages
-        helm dep build "${chart.name}"
-        helm package --destination build/packages/ "${chart.name}"
-      """
+      script.sh(
+        script: """
+                  mkdir -p build/packages
+                  helm dep build "${chart.name}"
+                  helm package --destination build/packages/ "${chart.name}"
+                """,
+        label: "Packaging helm chart: ${chart.name}")
     }
   }
 
@@ -62,9 +70,11 @@ class Helm {
    */
   static def test(def script, List<Chart> charts) {
     for (chart in charts) {
-      script.sh """
-        helm lint "${chart.name}"
-      """
+      script.sh(
+        script: """
+                  helm lint "${chart.name}"
+                """,
+        label: "Testing helm chart: ${chart.name}")
     }
   }
 
@@ -75,11 +85,13 @@ class Helm {
    * @param charts Charts defined in project `kubernetic.yaml`
    */
   static def push(def script, def chartRepo) {
-    script.sh """
-      for file in `ls -1 build/packages/*.tgz`; do
-        helm push \$file ${chartRepo}
-      done
-    """
+    script.sh(
+      script: """
+                for file in `ls -1 build/packages/*.tgz`; do
+                  helm push \$file ${chartRepo}
+                done
+              """,
+      label: "Pushing helm charts")
   }
 
   /**
@@ -90,10 +102,12 @@ class Helm {
    */
   static def upgrade(def script, List<Release> releases) {
     for (release in releases) {
-      script.sh """
-      helm dep build ${release.path}
-      helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace}
-      """
+      script.sh(
+        script: """
+                helm dep build ${release.path}
+                helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace}
+                """,
+        label: "Upgrading helm release: ${release.name}")
     }
   }
 }
