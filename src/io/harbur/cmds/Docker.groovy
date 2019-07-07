@@ -1,20 +1,35 @@
-#!/usr/bin/groovy
 package io.harbur.cmds
 
-def build() {
-  def properties = new io.harbur.utils.Properties()
-  def registry = properties.global().registry
+import io.harbur.properties.Image
+import io.harbur.properties.Registry
 
-  for (config in properties.project().docker) {
+/**
+ * Class for Docker commands.
+ */
+class Docker {
 
-    echo "Authenticating to Registry ${registry}"
-    docker.withRegistry(registry, 'gcr:woven-computing-234012') {
-      def customImage = docker.build("${config.image}", "-f ${config.path} ${config.context}")
+  /**
+   * Builds and pushes the docker all images defined in project `kubernetic.yaml`.
+   * Once an Image is built, it is pushed with all tags defined.
+   * Tags are evaluated with environment variables, e.g. a tag can be `${GIT_BRANCH}`.
+   *
+   * @param docker Reference to docker plugin
+   * @param script Reference to script scope to access `sh()`
+   * @param images Images defined in project `kubernetic.yaml`
+   * @param registry Registry defined in global `properties.yaml`
+   */
+  static def build(org.jenkinsci.plugins.docker.workflow.Docker docker, def script, List<Image> images, Registry registry) {
+    for (image in images) {
+      docker.withRegistry(registry.url, registry.credentialsId) {
+        // Build Image
+        def customImage = docker.build("${image.name}", "-f ${image.path} ${image.context}")
 
-      if (config.tags) {
-        for (tag in config.tags) {
-          tag = sh(script: "echo -n ${tag}", returnStdout: true).replaceAll('/','.')
-          customImage.push(tag)
+        // Push Image
+        if (image.tags) {
+          for (tag in image.tags) {
+            def imageTag = tag.getFormattedName(script)
+            customImage.push(imageTag)
+          }
         }
       }
     }
