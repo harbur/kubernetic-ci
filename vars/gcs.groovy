@@ -9,7 +9,7 @@ def call(Map params) {
         steps {
          step([$class: "ClassicUploadStep",
 		credentialsId: "woven-computing-234012",
-		bucket:"gs://beta.${params.bucket}",
+		bucket:"gs://${params.betabucket}",
 		pattern: params.pattern,
 		pathPrefix: params.pathPrefix,
 		showInline: true])
