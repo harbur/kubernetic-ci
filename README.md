@@ -1,4 +1,4 @@
-# Kubernetic Pipeline
+# Kubernetic CI
 
 Shared Jenkins Pipeline for easy CI/CD.
 
@@ -9,7 +9,7 @@ To use this pipeline, each project needs two files:
 a `Jenkinsfile` with the following content:
 
 ```groovy
-@Library("kubernetic-pipeline") _
+@Library("kubernetic-ci") _
 kubernetic{}
 ```
 
