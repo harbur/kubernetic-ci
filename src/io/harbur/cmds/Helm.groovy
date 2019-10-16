@@ -102,10 +102,11 @@ class Helm {
    */
   static def upgrade(def script, List<Release> releases) {
     for (release in releases) {
+      def values = release.values.join(" -f ")
       script.sh(
         script: """
                 helm dep build ${release.path}
-                helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace}
+                helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace} -f ${values}
                 """,
         label: "Upgrading helm release: ${release.name}")
     }
