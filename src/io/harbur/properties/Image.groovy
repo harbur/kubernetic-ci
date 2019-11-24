@@ -20,4 +20,12 @@ class Image {
             this.tags = [new Tag('${GIT_BRANCH}')]
         }
     }
+
+    def getName(def script, Global global) {
+        if (name) {
+            return name
+        }
+        def baseName = 'harbur/${JOB_BASE_NAME}'
+        return script.sh(script: "echo -n ${global.registry.name}/${baseName}", returnStdout: true).replaceAll('/','.')
+    }
 }
