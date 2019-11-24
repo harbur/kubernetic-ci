@@ -102,18 +102,21 @@ class Helm {
    */
   static def upgrade(def script, List<Release> releases) {
     for (release in releases) {
-      def values = release.values.join(" -f ")
+      def params = ""
+      if (release.values) {
+        params+= "-f " + release.values.join(" -f ")
+      }
       if (fileExists("${release.path}/dependencies.yaml")) {
         script.sh(
           script: """
                   helm dep build ${release.path}
-                  helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace} -f ${values}
+                  helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace} ${params}
                   """,
           label: "Upgrading helm release: ${release.name}")
       } else {
         script.sh(
           script: """
-                  helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace} -f ${values}
+                  helm upgrade -i ${release.name} ${release.path} --namespace ${release.namespace} ${params}
                   """,
           label: "Upgrading helm release: ${release.name}")
       }
