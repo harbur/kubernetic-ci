@@ -8,12 +8,16 @@ class Image {
     def context
     List<Tag> tags
 
-    Image(yaml) {          
+    Image(yaml) {
         this.name = yaml.name
         this.path = yaml.path
         this.context = yaml.context
-        this.tags = yaml.tags.collect { name ->
-            return new Tag(name)
+        if (yaml.tags) {
+            this.tags = yaml.tags.collect { name ->
+                return new Tag(name)
+            }
+        } else {
+            this.tags = [new Tag('${GIT_BRANCH}')]
         }
     }
 }
