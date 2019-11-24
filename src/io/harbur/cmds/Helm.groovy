@@ -106,7 +106,7 @@ class Helm {
       if (release.values) {
         params+= "-f " + release.values.join(" -f ")
       }
-      if (fileExists("${release.path}/dependencies.yaml")) {
+      if (script.fileExists(file: "${release.path}/dependencies.yaml")) {
         script.sh(
           script: """
                   helm dep build ${release.path}
