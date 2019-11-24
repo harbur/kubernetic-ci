@@ -22,7 +22,7 @@ class Docker {
     for (image in images) {
       docker.withRegistry(registry.url, registry.credentialsId) {
         // Build Image
-        def imageName = image.getName(script, global)
+        def imageName = image.getName(script, registry)
         def customImage = docker.build("${imageName}", "-f ${image.path} ${image.context}")
 
         // Push Image

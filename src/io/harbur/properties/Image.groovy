@@ -1,6 +1,7 @@
 package io.harbur.properties
 
 import io.harbur.properties.Tag
+import io.harbur.properties.Registry
 
 class Image {
     def name
@@ -21,11 +22,11 @@ class Image {
         }
     }
 
-    def getName(def script, Global global) {
+    def getName(def script, Registry registry) {
         if (name) {
             return name
         }
         def baseName = 'harbur/${JOB_BASE_NAME}'
-        return script.sh(script: "echo -n ${global.registry.name}/${baseName}", returnStdout: true).replaceAll('/','.')
+        return script.sh(script: "echo -n ${registry.name}/${baseName}", returnStdout: true).replaceAll('/','.')
     }
 }
