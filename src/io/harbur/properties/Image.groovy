@@ -26,7 +26,7 @@ class Image {
         if (name) {
             return name
         }
-        def baseName = 'harbur/${JOB_BASE_NAME}'
-        return script.sh(script: "echo -n ${registry.name}/${baseName}", returnStdout: true).replaceAll('/','.')
+        def baseName = 'harbur/${PROJECT_NAME}}'
+        return script.sh(script: "echo -n ${registry.name}/${baseName}", returnStdout: true)
     }
 }
