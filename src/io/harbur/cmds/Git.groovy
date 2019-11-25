@@ -31,6 +31,6 @@ class Git {
     env.GIT_URL=scmVars.GIT_URL
 
     // Get project name
-    env.PROJECT_NAME = env.JOB_NAME.split("/")[-1]
+    env.PROJECT_NAME = env.JOB_NAME.split("/")[-2]
   }
 }
