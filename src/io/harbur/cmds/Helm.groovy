@@ -95,6 +95,9 @@ class Helm {
       if (release.values) {
         params+= "-f " + release.values.join(" -f ")
       }
+      if (release.set) {
+        params+= "--set " + release.set.join(" --set ")
+      }
       if (script.fileExists(file: "${release.path}/dependencies.yaml")) {
         script.sh(
           script: """
