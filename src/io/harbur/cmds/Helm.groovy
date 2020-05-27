@@ -10,17 +10,6 @@ import io.harbur.properties.Repository
 class Helm {
 
   /**
-   * Initializes Helm client side.
-   *
-   * @param script Reference to script scope to access `sh()`
-   */
-  static def init(def script) {
-    script.sh(
-      script: "helm init -c",
-      label: "Initializing helm")
-  }
-
-  /**
    * Adds Helm repositories client side.
    *
    * @param script Reference to script scope to access `sh()`

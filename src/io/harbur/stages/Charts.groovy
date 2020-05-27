@@ -30,7 +30,6 @@ class Charts {
 
   private static def build(def script, Project project, Global global) {
     script.stage ('Build Charts') {
-      Helm.init(script)
       Helm.addRepos(script, global.repos)
       Helm.pack(script, project.charts)
     }
