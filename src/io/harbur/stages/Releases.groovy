@@ -26,7 +26,6 @@ class Releases {
 
   private static def upgrade(def script, project, global) {
     script.stage ('Upgrade Releases') {
-      Helm.init(script)
       Helm.addRepos(script, global.repos)
       Helm.upgrade(script, project.releases)
     }
