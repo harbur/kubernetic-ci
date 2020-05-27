@@ -93,10 +93,10 @@ class Helm {
     for (release in releases) {
       def params = ""
       if (release.values) {
-        params+= "-f " + release.values.join(" -f ")
+        params+= " -f " + release.values.join(" -f ")
       }
       if (release.set) {
-        params+= "--set " + release.set.join(" --set ")
+        params+= " --set " + release.set.join(" --set ")
       }
       if (script.fileExists(file: "${release.path}/dependencies.yaml")) {
         script.sh(
