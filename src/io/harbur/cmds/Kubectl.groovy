@@ -14,12 +14,16 @@ class Kubectl {
    * @param rollouts Rollouts defined in project `kubernetic.yaml`
    */
   static def rollout(def script, List<Rollout> rollouts) {
+    def env = script.env
+
     for (rollout in rollouts) {
-    script.sh(
-      script: """
-                kubectl rollout restart ${rollout.resource} -n ${rollout.namespace}
-              """,
-      label: "Rollout resource: ${rollout.resource} at namespace ${rollout.namespace}")
+      if (env.GIT_BRANCH == rollout.branch) {
+        script.sh(
+          script: """
+                    kubectl rollout restart ${rollout.resource} -n ${rollout.namespace}
+                  """,
+          label: "Rollout resource: ${rollout.resource} at namespace ${rollout.namespace}")
+      }
     }
   }
 }
