@@ -27,5 +27,6 @@ class Stages {
     Images.run(script, project, global)
     Charts.run(script, project, global)
     Releases.run(script, project, global)
+    Rollouts.run(script, project, global)
   }
 }
