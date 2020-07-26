@@ -20,5 +20,6 @@ class Kubectl {
                 kubectl rollout restart ${rollout.resource} -n ${rollout.namespace}
               """,
       label: "Rollout resource: ${rollout.resource} at namespace ${rollout.namespace}")
+    }
   }
 }
