@@ -6,6 +6,7 @@ import io.harbur.properties.Global
 import io.harbur.stages.Images
 import io.harbur.stages.Charts
 import io.harbur.stages.Releases
+import io.harbur.stages.Rollouts
 
 /**
  * Class for running Stages.
