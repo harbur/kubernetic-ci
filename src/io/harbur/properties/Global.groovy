@@ -9,7 +9,7 @@ class Global {
     List<Repository> repos
 
     Global(yaml) {
-        this.registry = new Registry(yaml.registry)
+        this.registry = new Registry(yaml.publicRegistry)
         this.chartRepo = yaml.chartRepo
         this.repos = yaml.repos.collect { k -> new Repository(k) }
     }
